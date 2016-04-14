@@ -1,0 +1,38 @@
+{
+  "name": "grunt-compile-docs",
+  "version": "1.0.0",
+  "description": "Compile your project's documentation files (supports HTML, markdown source files)",
+  "main": "tasks/compileDocs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/chill117/grunt-compile-docs.git"
+  },
+  "keywords": [
+    "grunt",
+    "nodejs",
+    "node",
+    "compile",
+    "docs",
+    "documentation",
+    "html",
+    "markdown",
+    "md",
+    "handlebars"
+  ],
+  "author": {
+    "name": "Charles Hill",
+    "email": "chill@degreesofzero.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chill117/grunt-compile-docs/issues"
+  },
+  "homepage": "https://github.com/chill117/grunt-compile-docs#readme",
+  "dependencies": {
+    "async": "2.0.0-rc.3",
+    "marked": "0.3.5"
+  }
+}
