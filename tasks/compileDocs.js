@@ -28,10 +28,6 @@ module.exports = function(grunt) {
 			return done(new Error('Missing required option: "template"'));
 		}
 
-		if (options.partials) {
-			registerPartials(options.partials);
-		}
-
 		var template = options.compileTemplate(grunt.file.read(options.template));
 
 		if (options.markdown) {
