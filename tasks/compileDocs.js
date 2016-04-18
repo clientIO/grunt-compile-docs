@@ -11,18 +11,7 @@ module.exports = function(grunt) {
 	grunt.registerMultiTask('compileDocs', 'Compile documentation.', function() {
 
 		var done = this.async();
-		var options = this.options({
-			marked: {
-				renderer: new marked.Renderer(),
-				gfm: true,
-				tables: true,
-				breaks: false,
-				pedantic: false,
-				sanitize: true,
-				smartLists: true,
-				smartypants: false
-			}
-		});
+		var options = this.options();
 
 		if (!options.template) {
 			return done(new Error('Missing required option: "template"'));
@@ -33,6 +22,8 @@ module.exports = function(grunt) {
 		if (options.markdown) {
 			marked.setOptions(options.markdown);
 		}
+
+		var createdFiles = 0;
 
 		async.each(this.files, function(file, next) {
 
@@ -70,11 +61,23 @@ module.exports = function(grunt) {
 				}
 
 				grunt.file.write(file.dest, template(data));
-
+				createdFiles++;
+				grunt.log.writeln('File ' + file.dest['cyan'] + ' created.');
 				next();
 			});
 
-		}, done);
+		}, function(error) {
+
+			if (error) return done(error);
+
+			if (createdFiles > 0) {
+				grunt.log.ok(createdFiles + ' ' + grunt.util.pluralize(createdFiles, 'file/files') + ' created.');
+			} else {
+				grunt.log.warn('No files created.');
+			}
+
+			done();
+		});
 	});
 
 	function getIntro(file, options, cb) {
