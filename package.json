@@ -1,6 +1,6 @@
 {
   "name": "grunt-compile-docs",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Compile your project's documentation files (supports HTML, markdown source files)",
   "main": "tasks/compileDocs.js",
   "scripts": {
@@ -12,15 +12,12 @@
   },
   "keywords": [
     "grunt",
-    "nodejs",
-    "node",
     "compile",
     "docs",
     "documentation",
     "html",
     "markdown",
-    "md",
-    "handlebars"
+    "md"
   ],
   "author": {
     "name": "Charles Hill",

@@ -11,7 +11,9 @@ module.exports = function(grunt) {
 	grunt.registerMultiTask('compileDocs', 'Compile documentation.', function() {
 
 		var done = this.async();
-		var options = this.options();
+		var options = this.options({
+			flatten: false
+		});
 
 		if (!options.template) {
 			return done(new Error('Missing required option: "template"'));
@@ -58,6 +60,10 @@ module.exports = function(grunt) {
 							data.items.sort(sortItems);
 						}
 					}
+
+					if (!options.flatten) {
+						data.items = unflatten(data.items);
+					}
 				}
 
 				grunt.file.write(file.dest, template(data));
@@ -79,6 +85,61 @@ module.exports = function(grunt) {
 			done();
 		});
 	});
+
+	function unflatten(items) {
+
+		var tree = [];
+		var itemHash = {};
+
+		items.forEach(function(item) {
+			itemHash[item.key] = item;
+		});
+
+		items.forEach(function(item) {
+
+			var pos;
+			var parentKey;
+
+			while ((pos = (parentKey || item.key).lastIndexOf('.')) !== -1) {
+
+				parentKey = (parentKey || item.key).substr(0, pos);
+
+				if (!itemHash[parentKey]) {
+
+					itemHash[parentKey] = {
+						key: parentKey,
+						content: ''
+					}
+				}
+			}
+		});
+
+		Object.keys(itemHash).forEach(function(key) {
+
+			var pos = key.lastIndexOf('.');
+
+			if (pos !== -1) {
+
+				var parentKey = key.substr(0, pos);
+
+				if (!itemHash[parentKey].items) {
+					itemHash[parentKey].items = [];
+				}
+
+				itemHash[parentKey].items.push(itemHash[key]);
+			}
+		});
+
+		var tree = [];
+
+		Object.keys(itemHash).forEach(function(key) {
+			if (key.indexOf('.') === -1) {
+				tree.push(itemHash[key]);
+			}
+		});
+
+		return tree;
+	}
 
 	function getIntro(file, options, cb) {
 
