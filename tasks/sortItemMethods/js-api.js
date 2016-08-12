@@ -11,6 +11,11 @@ module.exports = function(item1, item2) {
 
 	if (docDir1 === docDir2) {
 
+		var isIntro1 = isIntro(file1);
+		var isIntro2 = isIntro(file2);
+
+		if (isIntro1 !== isIntro2) return isIntro1 ? -1 : 1;
+
 		var isConstructor1 = isConstructorDoc(file1);
 		var isConstructor2 = isConstructorDoc(file2);
 
@@ -47,6 +52,11 @@ function getDocDir(file) {
 	}
 
 	return docDir;
+}
+
+function isIntro(file) {
+
+	return getFileBaseName(file) === 'intro';
 }
 
 function isConstructorDoc(file) {
